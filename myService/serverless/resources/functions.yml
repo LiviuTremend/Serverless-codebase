@@ -1,0 +1,14 @@
+receiver:
+  events:
+    - sqs:
+        arn: !GetAtt MyQueue.Arn
+        batchSize: 1
+  handler: ./src/handlers/handler.handler
+  iamRoleStatementsName: ${self:service}-process-product-${self:provider.stage}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:GetItem
+      Resource:
+      - ${self:custom.yourTableNameArn}
+      - ${self:custom.yourTableNameArn}/hanlder/*

@@ -1,0 +1,17 @@
+Resources:
+  MyQueue:
+    Type: AWS::SQS:Queue
+    Properties:
+      QueueName: MyFirstQueue
+      FifoQueue: true
+      ContentBasedDeduplication: true
+      MessageRetentionPeriod: 345600 # 4 days in seconds
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt MyQueueDLQ.Arn
+        maxReceiveCount: 2
+  MyQueueDLQ:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: MyQueueDLQ
+      FifoQueue: true
+      MessageRetentionPeriod: 1209600 # 14 days in seconds

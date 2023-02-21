@@ -1,0 +1,25 @@
+service: myservice
+frameworkVersion: '3'
+
+plugins:
+  - serverless-esbuild
+  - serverless-iam-roles-per-function
+
+package:
+  individually: true
+  patterns: 
+    - '!node_modules/**'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: eu-west-1
+  stage: dev
+
+functions:
+  - ${file(./serverless/resources/functions.yml)}
+
+resources:
+  - ${file(./serverless/resources/sqs.yml)}
+
+
